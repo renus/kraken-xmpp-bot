@@ -4,12 +4,12 @@ var KrakenMessage = function(client, event) {
     this.getResponse = function(from, receive) {
         this.receive  = receive;
 
-        switch  (this.receive) {
+        switch  (this.receive.toLowerCase()) {
 
             case "balance":
                 client.api('Balance', null, function(error, data) {
                     if(error) {
-                        event.emit("result", from, error);
+                        event.emit("result", from, error); return;
                     }
 
                     event.emit("result", from, data.result.ZEUR);
@@ -23,7 +23,7 @@ var KrakenMessage = function(client, event) {
                 var command = this.receive == 'orders open' ? 'OpenOrders' : 'ClosedOrders';
                 client.api(command, null, function(error, data) {
                     if(error) {
-                        event.emit("result", from, error);
+                        event.emit("result", from, error); return;
                     }
 
                     var i = 0;
